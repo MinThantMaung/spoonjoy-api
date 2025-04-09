@@ -30,13 +30,11 @@ router.post('/login',loginLimiter, async (req, res) => {
     const accessToken = generateToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
-    // Send refresh token as HttpOnly cookie
     res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
-        //secure: process.env.NODE_ENV === 'production',
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'Strict',
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     // Send access token in JSON
@@ -49,7 +47,7 @@ router.post('/login',loginLimiter, async (req, res) => {
     });
 });
 
-// REFRESH
+// Refresh Token
 router.post('/refresh', (req, res) => {
     const token = req.cookies.refreshToken;
 
@@ -65,7 +63,7 @@ router.post('/refresh', (req, res) => {
     }
 });
 
-// LOGOUT
+// Logout
 router.post('/logout', (req, res) => {
     res.clearCookie('refreshToken');
     res.status(200).json({ message: 'Logged out successfully' });
