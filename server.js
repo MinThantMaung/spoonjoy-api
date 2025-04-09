@@ -8,6 +8,9 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use('/v1/auth', authRoutes);
+app.get('/', (req, res) => {
+    res.send('Welcome');
+});
 
 
 mongoose.connect(process.env.MONGO_URI)
