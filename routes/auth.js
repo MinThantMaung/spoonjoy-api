@@ -26,7 +26,7 @@ router.post('/login',loginLimiter, async (req, res) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    const payload = { userId: user._id, email: user.email, role: user.role };
+    const payload = { userId: user._id, email: user.email};
     const accessToken = generateToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
